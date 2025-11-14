@@ -1,0 +1,25 @@
+{
+  "name": "billions-attestations-examples",
+  "version": "1.0.0",
+  "scripts": {
+    "create:review": "node --env-file=.env --import tsx ./scripts/createReview.ts",
+    "identity:reviews": "node --env-file=.env --import tsx ./scripts/identityReviews.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT OR Apache-2.0",
+  "description": "",
+  "dependencies": {
+    "@0xpolygonid/js-sdk": "^1.37.3",
+    "axios": "^1.13.2",
+    "ethers": "^6.15.0"
+  },
+  "peerDependencies": {
+    "@iden3/js-iden3-core": "1.7.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  }
+}

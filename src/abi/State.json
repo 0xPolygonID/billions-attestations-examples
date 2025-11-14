@@ -1,0 +1,1316 @@
+[
+  {
+    "inputs": [],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "length",
+        "type": "uint256"
+      }
+    ],
+    "name": "ChecksumLengthRequired",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "CrossChainGistRootNotFound",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "CrossChainStateNotFound",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DefaultIdTypeNotInitialized",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "GistRootEntryNotFound",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "length",
+        "type": "uint256"
+      }
+    ],
+    "name": "IdBytesLengthRequired",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "IdShouldNotBeZero",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "IdTypeNotSupported",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidInitialization",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "MethodParamsShouldBeEmpty",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NewStateAlreadyExists",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NewStateShouldNotBeZero",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotInitializing",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "OldStateDoesNotMatchTheLatestState",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "OldStateIsGenesisButIdentityAlreadyExists",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "OldStateIsNotGenesisButIdentityDoesNotExist",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "OldStateShouldBeZero",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnableInvalidOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "OwnableUnauthorizedAccount",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "SenderIsNotIdentityOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "StateEntryNotFound",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "UnknownProofType",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "UnknownStateTransitionMethodId",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "VerifierContractAddressShouldNotBeZero",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ZeroKnowledgeProofOfStateTransitionIsNotValid",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint64",
+        "name": "version",
+        "type": "uint64"
+      }
+    ],
+    "name": "Initialized",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipTransferStarted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "VERSION",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "acceptOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getCrossChainProofValidator",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getDefaultIdType",
+    "outputs": [
+      {
+        "internalType": "bytes2",
+        "name": "",
+        "type": "bytes2"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      }
+    ],
+    "name": "getGISTProof",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "root",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "existence",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint256[64]",
+            "name": "siblings",
+            "type": "uint256[64]"
+          },
+          {
+            "internalType": "uint256",
+            "name": "index",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "value",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "auxExistence",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint256",
+            "name": "auxIndex",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "auxValue",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct IState.GistProof",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "blockNumber",
+        "type": "uint256"
+      }
+    ],
+    "name": "getGISTProofByBlock",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "root",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "existence",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint256[64]",
+            "name": "siblings",
+            "type": "uint256[64]"
+          },
+          {
+            "internalType": "uint256",
+            "name": "index",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "value",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "auxExistence",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint256",
+            "name": "auxIndex",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "auxValue",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct IState.GistProof",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "root",
+        "type": "uint256"
+      }
+    ],
+    "name": "getGISTProofByRoot",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "root",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "existence",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint256[64]",
+            "name": "siblings",
+            "type": "uint256[64]"
+          },
+          {
+            "internalType": "uint256",
+            "name": "index",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "value",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "auxExistence",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint256",
+            "name": "auxIndex",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "auxValue",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct IState.GistProof",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      }
+    ],
+    "name": "getGISTProofByTime",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "root",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "existence",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint256[64]",
+            "name": "siblings",
+            "type": "uint256[64]"
+          },
+          {
+            "internalType": "uint256",
+            "name": "index",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "value",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "auxExistence",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint256",
+            "name": "auxIndex",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "auxValue",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct IState.GistProof",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getGISTRoot",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "start",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "length",
+        "type": "uint256"
+      }
+    ],
+    "name": "getGISTRootHistory",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "root",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "replacedByRoot",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "createdAtTimestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "replacedAtTimestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "createdAtBlock",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "replacedAtBlock",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct IState.GistRootInfo[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getGISTRootHistoryLength",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "root",
+        "type": "uint256"
+      }
+    ],
+    "name": "getGISTRootInfo",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "root",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "replacedByRoot",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "createdAtTimestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "replacedAtTimestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "createdAtBlock",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "replacedAtBlock",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct IState.GistRootInfo",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "blockNumber",
+        "type": "uint256"
+      }
+    ],
+    "name": "getGISTRootInfoByBlock",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "root",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "replacedByRoot",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "createdAtTimestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "replacedAtTimestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "createdAtBlock",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "replacedAtBlock",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct IState.GistRootInfo",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      }
+    ],
+    "name": "getGISTRootInfoByTime",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "root",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "replacedByRoot",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "createdAtTimestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "replacedAtTimestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "createdAtBlock",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "replacedAtBlock",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct IState.GistRootInfo",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes2",
+        "name": "idType",
+        "type": "bytes2"
+      },
+      {
+        "internalType": "uint256",
+        "name": "root",
+        "type": "uint256"
+      }
+    ],
+    "name": "getGistRootReplacedAt",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      }
+    ],
+    "name": "getIdTypeIfSupported",
+    "outputs": [
+      {
+        "internalType": "bytes2",
+        "name": "",
+        "type": "bytes2"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      }
+    ],
+    "name": "getStateInfoById",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "id",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "state",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "replacedByState",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "createdAtTimestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "replacedAtTimestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "createdAtBlock",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "replacedAtBlock",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct IState.StateInfo",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "state",
+        "type": "uint256"
+      }
+    ],
+    "name": "getStateInfoByIdAndState",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "id",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "state",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "replacedByState",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "createdAtTimestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "replacedAtTimestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "createdAtBlock",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "replacedAtBlock",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct IState.StateInfo",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "startIndex",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "length",
+        "type": "uint256"
+      }
+    ],
+    "name": "getStateInfoHistoryById",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "id",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "state",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "replacedByState",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "createdAtTimestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "replacedAtTimestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "createdAtBlock",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "replacedAtBlock",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct IState.StateInfo[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      }
+    ],
+    "name": "getStateInfoHistoryLengthById",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "state",
+        "type": "uint256"
+      }
+    ],
+    "name": "getStateReplacedAt",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getVerifier",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      }
+    ],
+    "name": "idExists",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract IStateTransitionVerifier",
+        "name": "verifierContractAddr",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes2",
+        "name": "defaultIdType",
+        "type": "bytes2"
+      },
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "internalType": "contract ICrossChainProofValidator",
+        "name": "validator",
+        "type": "address"
+      }
+    ],
+    "name": "initialize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes2",
+        "name": "idType",
+        "type": "bytes2"
+      }
+    ],
+    "name": "isIdTypeSupported",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "pendingOwner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes",
+        "name": "crossChainProofs",
+        "type": "bytes"
+      }
+    ],
+    "name": "processCrossChainProofs",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract ICrossChainProofValidator",
+        "name": "validator",
+        "type": "address"
+      }
+    ],
+    "name": "setCrossChainProofValidator",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes2",
+        "name": "defaultIdType",
+        "type": "bytes2"
+      }
+    ],
+    "name": "setDefaultIdType",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes2",
+        "name": "idType",
+        "type": "bytes2"
+      },
+      {
+        "internalType": "bool",
+        "name": "supported",
+        "type": "bool"
+      }
+    ],
+    "name": "setSupportedIdType",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newVerifierAddr",
+        "type": "address"
+      }
+    ],
+    "name": "setVerifier",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "state",
+        "type": "uint256"
+      }
+    ],
+    "name": "stateExists",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "oldState",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "newState",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "isOldStateGenesis",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint256[2]",
+        "name": "a",
+        "type": "uint256[2]"
+      },
+      {
+        "internalType": "uint256[2][2]",
+        "name": "b",
+        "type": "uint256[2][2]"
+      },
+      {
+        "internalType": "uint256[2]",
+        "name": "c",
+        "type": "uint256[2]"
+      }
+    ],
+    "name": "transitState",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "oldState",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "newState",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "isOldStateGenesis",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint256",
+        "name": "methodId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes",
+        "name": "methodParams",
+        "type": "bytes"
+      }
+    ],
+    "name": "transitStateGeneric",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]
