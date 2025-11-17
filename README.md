@@ -30,8 +30,8 @@ This repo shows some examples of usage for Billions Attestations Registry.
 ## Check attestations
 You can check attestations in different ways:
 - **Billions Testnet Block Explorer**. In the Attestation Registry contract (https://billions-testnet-blockscout.eu-north-2.gateway.fm/address/0x40Ef525515E409F45659f2d8E9962f9aeA3ab68A?tab=txs)
-- **Billions Tesnet Attestations Explorer**. https://attestation-explorer-testnet.billions.network
+- **Billions Tesnet Attestations Explorer**. https://attestations-explorer-testnet.billions.network
 - **Billions Testnet Attestations API**. Calling the API and filtering by attestations fields.
     ```
-    curl https://attestation-api-testnet.billions.network/api/v1/attestations?schemaId=0xc5708478573c079ed58716909734f526d843151672414e7474fadc11e4cb041f&recipientDid=did:iden3:billions:test:2W4c3K3BgksQCSdXCP5LJDDrexPL1gHUfaCHAACE4a&page_number=1&page_size=100
+    curl https://attestations-api-testnet.billions.network/api/v1/attestations?schemaId=0xc5708478573c079ed58716909734f526d843151672414e7474fadc11e4cb041f&recipientDid=did:iden3:billions:test:2W4c3K3BgksQCSdXCP5LJDDrexPL1gHUfaCHAACE4a&page_number=1&page_size=100
     ```
