@@ -27,6 +27,13 @@ This repo shows some examples of usage for Billions Attestations Registry.
     npm run identity:reviews -- --did did:iden3:billions:test:2W4c3K3BgksQCSdXCP5LJDDrexPL1gHUfaCHAACE4a
     ```
 
+3. Revoke an attestation that is not revoked
+
+    ```
+    npm run revoke:attestation -- --id 0x89c074c18440bc0b1dd902683249f4fee916402262a1d51d90ad1cfe71d202fd
+    ```
+
+
 ## Check attestations
 You can check attestations in different ways:
 - **Billions Testnet Block Explorer**. In the Attestation Registry contract (https://billions-testnet-blockscout.eu-north-2.gateway.fm/address/0x40Ef525515E409F45659f2d8E9962f9aeA3ab68A?tab=txs)
