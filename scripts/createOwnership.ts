@@ -3,36 +3,8 @@ import { checkAuthenticationAuthV2, Options } from "../src/utils";
 import { ethers } from "ethers";
 import { Wallet } from "ethers";
 import { JsonRpcProvider } from "ethers";
-import stateAbi from "../src/abi/State.json";
-import authVerifierAbi from "../src/abi/AuthVerifier.json";
-import attestationRegistryAbi from "../src/abi/AttestationRegistry.json";
-import schemaRegistryAbi from "../src/abi/SchemaRegistry.json";
-import {
-  calcChallengeAuthV2,
-  CircuitId,
-  core,
-  CredentialStatusType,
-  IdentityCreationOptions,
-  ZeroKnowledgeProofAuthResponse,
-} from "@0xpolygonid/js-sdk";
-import {
-  initCircuitStorage,
-  initInMemoryDataStorageAndWallets,
-  initProofService,
-  packZkpProof,
-  prepareZkpProof,
-} from "../src/walletSetup";
-import { DID, Id } from "@iden3/js-iden3-core";
 
 const options: Record<string, Options> = {
-  stars: {
-    type: "string",
-    short: "s",
-  },
-  comment: {
-    type: "string",
-    short: "c",
-  },
   recipientDid: {
     type: "string",
   },
@@ -45,7 +17,7 @@ const options: Record<string, Options> = {
 };
 
 // Check required env variables
-const schemaId = process.env.REVIEW_ATTESTATION_SCHEMA as string;
+const schemaId = process.env.OWNERSHIP_ATTESTATION_SCHEMA as string;
 const privateKey = process.env.PRIVATE_KEY as string;
 const rpcUrl = process.env.BILLIONS_TESTNET_RPC_URL as string;
 const stateContractAddress = process.env.STATE_CONTRACT_ADDRESS as string;
@@ -94,7 +66,7 @@ function checkRequiredParams() {
     throw new Error("CIRCUITS_PATH is not defined in .env file");
   }
   if (!schemaId) {
-    throw new Error("REVIEW_ATTESTATION_SCHEMA is not defined in .env file");
+    throw new Error("OWNERSHIP_ATTESTATION_SCHEMA is not defined in .env file");
   }
 }
 
@@ -104,12 +76,11 @@ async function main() {
   // Initialize signer wallet
   const wallet = new Wallet(privateKey, new JsonRpcProvider(rpcUrl));
 
-  let { stars, comment, recipientDid, recipientId, recipientAddress } =
-    parseArgs({
-      options,
-      args: process.argv,
-      allowPositionals: true,
-    }).values;
+  let { recipientDid, recipientId, recipientAddress } = parseArgs({
+    options,
+    args: process.argv,
+    allowPositionals: true,
+  }).values;
 
   recipientId = recipientId || "0";
   recipientDid = recipientDid || "";
@@ -138,15 +109,13 @@ async function main() {
     });
 
   const encodedData = ethers.AbiCoder.defaultAbiCoder().encode(
-    ["uint8", "string"],
-    [stars, comment]
+    ["bytes"],
+    ["0x"]
   );
 
   console.log(`\n🔧 Test Attestation Parameters:`);
   console.log(`   - Schema Id: ${schemaId}`);
   console.log(`   - User ID: ${userId}`);
-  console.log(`   - Stars: ${stars}`);
-  console.log(`   - Comment: ${comment}`);
   console.log(`   - Encoded Data: ${encodedData}`);
 
   // Create attestation
@@ -202,13 +171,11 @@ async function main() {
     console.log(`   - Schema: ${storedAttestation.schemaId}`);
     console.log(`   - Attester ID: ${storedAttestation.attester.iden3Id}`);
 
-    const [decodedStars, decodedComment] =
-      ethers.AbiCoder.defaultAbiCoder().decode(
-        ["uint8", "string"],
-        storedAttestation.data
-      );
-    console.log(`   - Stars: ${decodedStars}`);
-    console.log(`   - Comment: ${decodedComment}`);
+    const [decodedData] = ethers.AbiCoder.defaultAbiCoder().decode(
+      ["bytes"],
+      storedAttestation.data
+    );
+    console.log(`   - Data: ${decodedData}`);
     console.log(
       `   - Valid: ${await attestationRegistry.isAttestationValid(
         attestationId

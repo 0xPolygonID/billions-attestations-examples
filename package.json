@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "create:review": "node --env-file=.env --import tsx ./scripts/createReview.ts",
+    "create:ownership": "node --env-file=.env --import tsx ./scripts/createOwnership.ts",
     "identity:reviews": "node --env-file=.env --import tsx ./scripts/identityReviews.ts",
     "revoke:attestation": "node --env-file=.env --import tsx ./scripts/revokeAttestation.ts"
   },

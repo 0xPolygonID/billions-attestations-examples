@@ -18,7 +18,7 @@ This repo shows some examples of usage for Billions Attestations Registry.
 1. Create review attestation for a specific identity
 
     ```
-    npm run create:review --  --stars 5 --comment "A new comment for the identity" --recipientDid did:iden3:billions:test:2W4c3K3BgksQCSdXCP5LJDDrexPL1gHUfaCHAACE4a
+    npm run create:review -- --stars 5 --comment "A new comment for the identity" --recipientDid did:iden3:billions:test:2W4c3K3BgksQCSdXCP5LJDDrexPL1gHUfaCHAACE4a
     ```
 
 2. Get review attestations for a specific identity
@@ -32,7 +32,11 @@ This repo shows some examples of usage for Billions Attestations Registry.
     ```
     npm run revoke:attestation -- --id 0x89c074c18440bc0b1dd902683249f4fee916402262a1d51d90ad1cfe71d202fd
     ```
+4. Create ownership attesation for a specific identity
 
+    ```
+    npm run create:ownership  -- --recipientDid did:iden3:billions:test:2W4c3K3BgksQCSdXCP5LJDDrexPL1gHUfaCHAACE4a
+    ```
 
 ## Check attestations
 You can check attestations in different ways:
