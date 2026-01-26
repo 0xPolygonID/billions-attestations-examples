@@ -5,13 +5,20 @@ import { Wallet } from "ethers";
 import { JsonRpcProvider } from "ethers";
 
 const options: Record<string, Options> = {
-  stars: {
+  schemaId: {
     type: "string",
-    short: "s",
   },
-  comment: {
+  surveyName: {
     type: "string",
-    short: "c",
+  },
+  question1: {
+    type: "string",
+  },
+  question2: {
+    type: "string",
+  },
+  score: {
+    type: "string",
   },
   recipientDid: {
     type: "string",
@@ -25,7 +32,6 @@ const options: Record<string, Options> = {
 };
 
 // Check required env variables
-const schemaId = process.env.REVIEW_ATTESTATION_SCHEMA as string;
 const privateKey = process.env.PRIVATE_KEY as string;
 const rpcUrl = process.env.BILLIONS_TESTNET_RPC_URL as string;
 const stateContractAddress = process.env.STATE_CONTRACT_ADDRESS as string;
@@ -51,17 +57,17 @@ function checkRequiredParams() {
   }
   if (!authVerifierContractAddress) {
     throw new Error(
-      "AUTH_VERIFIER_CONTRACT_ADDRESS is not defined in .env file"
+      "AUTH_VERIFIER_CONTRACT_ADDRESS is not defined in .env file",
     );
   }
   if (!attestationRegistryContractAddress) {
     throw new Error(
-      "ATTESTATION_REGISTRY_CONTRACT_ADDRESS is not defined in .env file"
+      "ATTESTATION_REGISTRY_CONTRACT_ADDRESS is not defined in .env file",
     );
   }
   if (!schemaRegistryContractAddress) {
     throw new Error(
-      "SCHEMA_REGISTRY_CONTRACT_ADDRESS is not defined in .env file"
+      "SCHEMA_REGISTRY_CONTRACT_ADDRESS is not defined in .env file",
     );
   }
   if (!chainId) {
@@ -73,9 +79,6 @@ function checkRequiredParams() {
   if (!circuitsPath) {
     throw new Error("CIRCUITS_PATH is not defined in .env file");
   }
-  if (!schemaId) {
-    throw new Error("REVIEW_ATTESTATION_SCHEMA is not defined in .env file");
-  }
 }
 
 async function main() {
@@ -84,29 +87,48 @@ async function main() {
   // Initialize signer wallet
   const wallet = new Wallet(privateKey, new JsonRpcProvider(rpcUrl));
 
-  let { stars, comment, recipientDid, recipientId, recipientAddress } =
-    parseArgs({
-      options,
-      args: process.argv,
-      allowPositionals: true,
-    }).values;
+  let {
+    schemaId,
+    surveyName,
+    question1,
+    question2,
+    score,
+    recipientDid,
+    recipientId,
+    recipientAddress,
+  } = parseArgs({
+    options,
+    args: process.argv,
+    allowPositionals: true,
+  }).values;
 
   recipientId = recipientId || "0";
   recipientDid = recipientDid || "";
   recipientAddress = recipientAddress || ethers.ZeroAddress;
 
+  schemaId = schemaId || "";
+  surveyName = surveyName || "";
+  question1 = question1 || "";
+  question2 = question2 || "";
+  score = score || "0";
+
   if (
+    (schemaId as string).trim() === "" &&
+    (surveyName as string).trim() === "" &&
+    (question1 as string).trim() === "" &&
+    (question2 as string).trim() === "" &&
+    (score as string).trim() === "0" &&
     (recipientDid as string).trim() === "" &&
     recipientId === "0" &&
     recipientAddress === "0x0000000000000000000000000000000000000000"
   ) {
     throw new Error(
-      "One of the recipient information is required (recipientDid, recipientId or recipientAddress)"
+      "One of the recipient information is required (schemaId, surveyName, question1, question2, score, recipientDid, recipientId, or recipientAddress)",
     );
   }
 
   const { userId, userDid, attestationRegistry, signerAddress } =
-    await checkAuthenticationAuthV2(schemaId, wallet, {
+    await checkAuthenticationAuthV2(schemaId as string, wallet, {
       rpcUrl,
       rhsUrl,
       circuitsPath,
@@ -118,19 +140,21 @@ async function main() {
     });
 
   const encodedData = ethers.AbiCoder.defaultAbiCoder().encode(
-    ["uint8", "string"],
-    [stars, comment]
+    ["string", "string", "string", "uint256"],
+    [surveyName, question1, question2, score],
   );
 
   console.log(`\n🔧 Test Attestation Parameters:`);
   console.log(`   - Schema Id: ${schemaId}`);
   console.log(`   - User ID: ${userId}`);
-  console.log(`   - Stars: ${stars}`);
-  console.log(`   - Comment: ${comment}`);
+  console.log(`   - Survey Name: ${surveyName}`);
+  console.log(`   - Question 1: ${question1}`);
+  console.log(`   - Question 2: ${question2}`);
+  console.log(`   - Score: ${score}`);
   console.log(`   - Encoded Data: ${encodedData}`);
 
   // Create attestation
-  console.log(`\n⏳ Creating attestation review...`);
+  console.log(`\n⏳ Creating custom attestation...`);
   const tx = await attestationRegistry.recordAttestation({
     schemaId: schemaId,
     attester: { did: userDid, iden3Id: userId, ethereumAddress: signerAddress },
@@ -174,25 +198,25 @@ async function main() {
 
     // Verify the attestation was stored correctly
     console.log(`\n🔍 Verifying attestation...`);
-    const storedAttestation = await attestationRegistry.getAttestation(
-      attestationId
-    );
+    const storedAttestation =
+      await attestationRegistry.getAttestation(attestationId);
     console.log(`✅ Attestation verification successful:`);
     console.log(`   - Id: ${storedAttestation.id}`);
     console.log(`   - Schema: ${storedAttestation.schemaId}`);
     console.log(`   - Attester ID: ${storedAttestation.attester.iden3Id}`);
-
-    const [decodedStars, decodedComment] =
+    const [decodedSurveyName, decodedQuestion1, decodedQuestion2, decodedScore] =
       ethers.AbiCoder.defaultAbiCoder().decode(
-        ["uint8", "string"],
-        storedAttestation.data
+        ["string", "string", "string", "uint256"],
+        storedAttestation.data,
       );
-    console.log(`   - Stars: ${decodedStars}`);
-    console.log(`   - Comment: ${decodedComment}`);
+    console.log(`   - Survey Name: ${decodedSurveyName}`);
+    console.log(`   - Question 1: ${decodedQuestion1}`);
+    console.log(`   - Question 2: ${decodedQuestion2}`);
+    console.log(`   - Score: ${decodedScore}`);
     console.log(
       `   - Valid: ${await attestationRegistry.isAttestationValid(
-        attestationId
-      )}`
+        attestationId,
+      )}`,
     );
   } else {
     throw new Error("Failed to extract attestation Id from transaction events");

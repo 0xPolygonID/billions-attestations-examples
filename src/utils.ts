@@ -38,23 +38,26 @@ export async function checkAuthenticationAuthV2(
     attestationRegistryContractAddress: string;
     schemaRegistryContractAddress: string;
     chainId: string;
-  }
+  },
 ): Promise<{
   userId: bigint;
   userDid: string;
   attestationRegistry: any;
+  schemaRegistry: any;
   signerAddress: string;
 }> {
-  console.log(`🧪 Creating attestation review...`);
-
   // Validate Id format
-  if (!schemaId.startsWith("0x") || schemaId.length !== 66) {
+  if (!schemaId.startsWith("0x") || (schemaId.length !== 66 && schemaId != "0x")) {
     throw new Error(
-      "Invalid schema Id format. Expected 32-byte hex string with 0x prefix"
+      "Invalid schema Id format. Expected 32-byte hex string with 0x prefix",
     );
   }
 
-  const state = new ethers.Contract(opts.stateContractAddress, stateAbi, wallet);
+  const state = new ethers.Contract(
+    opts.stateContractAddress,
+    stateAbi,
+    wallet,
+  );
 
   const defaultNetworkConnection = {
     rpcUrl: opts.rpcUrl,
@@ -79,7 +82,7 @@ export async function checkAuthenticationAuthV2(
     identityWallet,
     credentialWallet,
     dataStorage.states,
-    circuitStorage
+    circuitStorage,
   );
 
   const { did: userDID, credential: authBJJCredentialUser } =
@@ -94,17 +97,17 @@ export async function checkAuthenticationAuthV2(
   const schemaRegistry = new ethers.Contract(
     opts.schemaRegistryContractAddress,
     schemaRegistryAbi,
-    wallet
+    wallet,
   );
   const authVerifier = new ethers.Contract(
     opts.authVerifierContractAddress,
     authVerifierAbi,
-    wallet
+    wallet,
   );
   const attestationRegistry = new ethers.Contract(
     opts.attestationRegistryContractAddress,
     attestationRegistryAbi,
-    wallet
+    wallet,
   );
 
   console.log(`📋 AttestationRegistry: ${attestationRegistry.target}`);
@@ -113,19 +116,24 @@ export async function checkAuthenticationAuthV2(
   console.log(`🌐 State Contract: ${state.target}`);
   console.log(`🆔 Schema Id: ${schemaId}`);
 
-  // Verify schema exists
-  const schemaRecord = await schemaRegistry.getSchema(schemaId);
-  if (
-    schemaRecord.id ===
-    "0x0000000000000000000000000000000000000000000000000000000000000000"
-  ) {
-    throw new Error(`Schema with Id ${schemaId} not found`);
-  }
+  if (schemaId != "0x") {
+    // Verify schema exists
+    const schemaRecord = await schemaRegistry.getSchema(schemaId);
+    if (
+      schemaRecord.id ===
+      "0x0000000000000000000000000000000000000000000000000000000000000000"
+    ) {
+      throw new Error(`Schema with Id ${schemaId} not found`);
+    }
 
-  console.log(`\n✅ Schema found:`);
-  console.log(`   - Schema: ${schemaRecord.schema}`);
-  console.log(`   - Resolver: ${schemaRecord.resolver}`);
-  console.log(`   - Revocable: ${schemaRecord.revocable}`);
+    console.log(`\n✅ Schema found:`);
+    console.log(`   - Schema: ${schemaRecord.schema}`);
+    console.log(`   - Resolver: ${schemaRecord.resolver}`);
+    console.log(`   - Revocable: ${schemaRecord.revocable}`);
+
+    console.log(`📝 Using schema: ${schemaRecord.schema}`);
+    console.log(`🔧 Schema resolver: ${schemaRecord.resolver}`);
+  }
 
   // Authenticate the user (using ethIdentity method)
   const signerAddress = await wallet.getAddress();
@@ -164,7 +172,7 @@ export async function checkAuthenticationAuthV2(
         zkpRes.pub_signals,
         preparedZkpProof.a,
         preparedZkpProof.b,
-        preparedZkpProof.c
+        preparedZkpProof.c,
       );
 
       const authResponse = {
@@ -179,12 +187,11 @@ export async function checkAuthenticationAuthV2(
 
         try {
           // Try to get the auth method info (this will throw if it doesn't exist)
-          const authMethodExists = await authVerifier.authMethodExists(
-            "authV2"
-          );
+          const authMethodExists =
+            await authVerifier.authMethodExists("authV2");
           if (!authMethodExists) {
             console.log(
-              `⚠️ ethIdentity auth method does not exist in AuthVerifier!`
+              `⚠️ ethIdentity auth method does not exist in AuthVerifier!`,
             );
             throw new Error("authV2 auth method not found");
           }
@@ -195,10 +202,10 @@ export async function checkAuthenticationAuthV2(
           const authTx = await authVerifier.submitResponse(
             authResponse,
             [], // Empty responses array
-            "0x" // Empty cross chain proofs
+            "0x", // Empty cross chain proofs
           );
           console.log(
-            `⏳ Authentication transaction submitted: ${authTx.hash}`
+            `⏳ Authentication transaction submitted: ${authTx.hash}`,
           );
           await authTx.wait();
           console.log(`✅ User authenticated successfully with ID: ${userId}`);
@@ -206,18 +213,18 @@ export async function checkAuthenticationAuthV2(
           // Verify authentication worked
           currentUserId = await authVerifier.getIdByAddress(signerAddress);
           console.log(
-            `Verified user ID after authentication: ${currentUserId}`
+            `Verified user ID after authentication: ${currentUserId}`,
           );
 
           if (currentUserId === 0n) {
             throw new Error(
-              "Authentication failed - user ID is still 0 after authentication"
+              "Authentication failed - user ID is still 0 after authentication",
             );
           }
         } catch (methodError) {
           console.error(`ethIdentity method error: ${methodError}`);
           throw new Error(
-            `Authentication failed: The ethIdentity auth method is either not registered or not properly configured in the AuthVerifier contract. Make sure to deploy and register the ethIdentity validator first.`
+            `Authentication failed: The ethIdentity auth method is either not registered or not properly configured in the AuthVerifier contract. Make sure to deploy and register the ethIdentity validator first.`,
           );
         }
       } catch (authError) {
@@ -227,7 +234,7 @@ export async function checkAuthenticationAuthV2(
     } catch (error) {
       console.error(`❌ Authentication process failed: ${error}`);
       throw new Error(
-        `User authentication failed. Cannot proceed with attestation creation. Error: ${error}`
+        `User authentication failed. Cannot proceed with attestation creation. Error: ${error}`,
       );
     }
   } else {
@@ -235,10 +242,10 @@ export async function checkAuthenticationAuthV2(
     // Use the existing user ID from the AuthVerifier
     if (currentUserId.toString() !== userId.toString()) {
       console.log(
-        `⚠️ Warning: Current user ID ${currentUserId} differs from generated ID ${userId}`
+        `⚠️ Warning: Current user ID ${currentUserId} differs from generated ID ${userId}`,
       );
       console.log(
-        `Using the authenticated ID from AuthVerifier: ${currentUserId}`
+        `Using the authenticated ID from AuthVerifier: ${currentUserId}`,
       );
       userId = currentUserId;
     }
@@ -249,8 +256,11 @@ export async function checkAuthenticationAuthV2(
   console.log(`📋 AttestationRegistry: ${attestationRegistry.target}`);
   console.log(`📋 SchemaRegistry: ${schemaRegistry.target}`);
 
-  console.log(`📝 Using schema: ${schemaRecord.schema}`);
-  console.log(`🔧 Schema resolver: ${schemaRecord.resolver}`);
-
-  return { userId, userDid, attestationRegistry, signerAddress };
+  return {
+    userId,
+    userDid,
+    attestationRegistry,
+    schemaRegistry,
+    signerAddress,
+  };
 }

@@ -3,3 +3,4 @@ dist
 .env
 .vscode
 circuits
+scripts/custom_schemas_output

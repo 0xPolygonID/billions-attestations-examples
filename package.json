@@ -4,6 +4,8 @@
   "scripts": {
     "create:review": "node --env-file=.env --import tsx ./scripts/createReview.ts",
     "create:ownership": "node --env-file=.env --import tsx ./scripts/createOwnership.ts",
+    "create:custom:schema": "node --env-file=.env --import tsx ./scripts/createCustomSchema.ts",
+    "create:custom:attestation": "node --env-file=.env --import tsx ./scripts/createCustomAttestation.ts",
     "identity:reviews": "node --env-file=.env --import tsx ./scripts/identityReviews.ts",
     "revoke:attestation": "node --env-file=.env --import tsx ./scripts/revokeAttestation.ts"
   },

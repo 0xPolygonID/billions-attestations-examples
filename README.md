@@ -37,6 +37,17 @@ This repo shows some examples of usage for Billions Attestations Registry.
     ```
     npm run create:ownership  -- --recipientDid did:iden3:billions:test:2W4c3K3BgksQCSdXCP5LJDDrexPL1gHUfaCHAACE4a
     ```
+5. Create custom schema
+
+    ```
+    npm run create:custom:schema -- --schemaDefinition "string surveyName,string question1,string question2,uint256 score" --revocable true
+    ```
+6. Create custom attestation
+    ```
+    npm run create:custom:attestation -- --schemaId "0x31ab00cee3d067ae5000edf4cbc2c951c340fc1121305c4d5e567e61e1815aae" --surveyName "survey1" --question1 "question1 details" --question2 "question2 details" --score "120" --recipientDid did:iden3:billions:test:2W4c3K3BgksQCSdXCP5LJDDrexPL1gHUfaCHAACE4a
+    ```
+
+If you need to create custom attestations based on your custom schema you can update `createCustomAttestation.ts` with your specific schema fields to register the attestation and to decode the information from the onchain attestation properly.
 
 ## Check attestations
 You can check attestations in different ways:
