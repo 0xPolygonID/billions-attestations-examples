@@ -6,7 +6,7 @@
   },
   {
     "inputs": [],
-    "name": "InvalidAuthVerifierContractAddress",
+    "name": "InvalidIdentityVerifierContractAddress",
     "type": "error"
   },
   {
@@ -154,6 +154,11 @@
             "internalType": "string",
             "name": "schema",
             "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "name",
+            "type": "string"
           }
         ],
         "indexed": false,
@@ -187,10 +192,10 @@
   },
   {
     "inputs": [],
-    "name": "getAuthVerifierAddress",
+    "name": "getIdentityVerifierAddress",
     "outputs": [
       {
-        "internalType": "contract AuthVerifier",
+        "internalType": "contract IdentityVerifier",
         "name": "",
         "type": "address"
       }
@@ -229,6 +234,11 @@
             "internalType": "string",
             "name": "schema",
             "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "name",
+            "type": "string"
           }
         ],
         "internalType": "struct SchemaRecord",
@@ -247,8 +257,8 @@
         "type": "address"
       },
       {
-        "internalType": "contract AuthVerifier",
-        "name": "_authVerifier",
+        "internalType": "contract IdentityVerifier",
+        "name": "_identityVerifier",
         "type": "address"
       }
     ],
@@ -285,6 +295,11 @@
   },
   {
     "inputs": [
+      {
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      },
       {
         "internalType": "string",
         "name": "schema",
@@ -327,12 +342,12 @@
   {
     "inputs": [
       {
-        "internalType": "contract AuthVerifier",
+        "internalType": "contract IdentityVerifier",
         "name": "newVerifier",
         "type": "address"
       }
     ],
-    "name": "setAuthVerifier",
+    "name": "setIdentityVerifier",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

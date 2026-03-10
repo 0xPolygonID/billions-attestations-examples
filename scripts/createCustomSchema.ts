@@ -22,8 +22,8 @@ const options: Record<string, Options> = {
 const privateKey = process.env.PRIVATE_KEY as string;
 const rpcUrl = process.env.BILLIONS_TESTNET_RPC_URL as string;
 const stateContractAddress = process.env.STATE_CONTRACT_ADDRESS as string;
-const authVerifierContractAddress = process.env
-  .AUTH_VERIFIER_CONTRACT_ADDRESS as string;
+const identityVerifierContractAddress = process.env
+  .IDENTITY_VERIFIER_CONTRACT_ADDRESS as string;
 const attestationRegistryContractAddress = process.env
   .ATTESTATION_REGISTRY_CONTRACT_ADDRESS as string;
 const schemaRegistryContractAddress = process.env
@@ -42,9 +42,9 @@ function checkRequiredParams() {
   if (!stateContractAddress) {
     throw new Error("STATE_CONTRACT_ADDRESS is not defined in .env file");
   }
-  if (!authVerifierContractAddress) {
+  if (!identityVerifierContractAddress) {
     throw new Error(
-      "AUTH_VERIFIER_CONTRACT_ADDRESS is not defined in .env file",
+      "IDENTITY_VERIFIER_CONTRACT_ADDRESS is not defined in .env file",
     );
   }
   if (!attestationRegistryContractAddress) {
@@ -96,7 +96,7 @@ async function main() {
       rhsUrl,
       circuitsPath,
       stateContractAddress,
-      authVerifierContractAddress,
+      identityVerifierContractAddress,
       attestationRegistryContractAddress,
       schemaRegistryContractAddress,
       chainId,

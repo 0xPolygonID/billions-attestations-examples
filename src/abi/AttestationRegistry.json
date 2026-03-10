@@ -21,17 +21,17 @@
   },
   {
     "inputs": [],
-    "name": "AttesterDidRequired",
-    "type": "error"
-  },
-  {
-    "inputs": [],
     "name": "AttesterIdMismatchAuthenticated",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "InvalidAuthVerifierContractAddress",
+    "name": "AuthChallengeIsNotValid",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidIdentityVerifierContractAddress",
     "type": "error"
   },
   {
@@ -383,12 +383,60 @@
   {
     "inputs": [
       {
-        "internalType": "string",
-        "name": "userDid",
-        "type": "string"
+        "internalType": "uint256",
+        "name": "attesterIden3Id",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "schemaId",
+        "type": "bytes32"
       }
     ],
-    "name": "getAttestationsByUserDid",
+    "name": "getAttestationsByAttesterIden3IdAndSchemaId",
+    "outputs": [
+      {
+        "internalType": "bytes32[]",
+        "name": "",
+        "type": "bytes32[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "recipientIden3Id",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "schemaId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getAttestationsByRecipientIden3IdAndSchemaId",
+    "outputs": [
+      {
+        "internalType": "bytes32[]",
+        "name": "",
+        "type": "bytes32[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "userId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getAttestationsByUserId",
     "outputs": [
       {
         "internalType": "bytes32[]",
@@ -401,10 +449,10 @@
   },
   {
     "inputs": [],
-    "name": "getAuthVerifierAddress",
+    "name": "getIdentityVerifierAddress",
     "outputs": [
       {
-        "internalType": "contract AuthVerifier",
+        "internalType": "contract IdentityVerifier",
         "name": "",
         "type": "address"
       }
@@ -433,8 +481,8 @@
         "type": "address"
       },
       {
-        "internalType": "contract AuthVerifier",
-        "name": "_authVerifier",
+        "internalType": "contract IdentityVerifier",
+        "name": "_identityVerifier",
         "type": "address"
       },
       {
@@ -584,6 +632,113 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "string",
+            "name": "authMethod",
+            "type": "string"
+          },
+          {
+            "internalType": "bytes",
+            "name": "proof",
+            "type": "bytes"
+          }
+        ],
+        "internalType": "struct IVerifier.AuthResponse",
+        "name": "authResponse",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          {
+            "internalType": "bytes32",
+            "name": "schemaId",
+            "type": "bytes32"
+          },
+          {
+            "components": [
+              {
+                "internalType": "string",
+                "name": "did",
+                "type": "string"
+              },
+              {
+                "internalType": "uint256",
+                "name": "iden3Id",
+                "type": "uint256"
+              },
+              {
+                "internalType": "address",
+                "name": "ethereumAddress",
+                "type": "address"
+              }
+            ],
+            "internalType": "struct Identity",
+            "name": "attester",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "string",
+                "name": "did",
+                "type": "string"
+              },
+              {
+                "internalType": "uint256",
+                "name": "iden3Id",
+                "type": "uint256"
+              },
+              {
+                "internalType": "address",
+                "name": "ethereumAddress",
+                "type": "address"
+              }
+            ],
+            "internalType": "struct Identity",
+            "name": "recipient",
+            "type": "tuple"
+          },
+          {
+            "internalType": "uint256",
+            "name": "expirationTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "revocable",
+            "type": "bool"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "refId",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes",
+            "name": "data",
+            "type": "bytes"
+          }
+        ],
+        "internalType": "struct AttestationRequest",
+        "name": "request",
+        "type": "tuple"
+      }
+    ],
+    "name": "recordAttestationWithAuth",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "renounceOwnership",
     "outputs": [],
@@ -612,12 +767,12 @@
   {
     "inputs": [
       {
-        "internalType": "contract AuthVerifier",
+        "internalType": "contract IdentityVerifier",
         "name": "newVerifier",
         "type": "address"
       }
     ],
-    "name": "setAuthVerifier",
+    "name": "setIdentityVerifier",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
