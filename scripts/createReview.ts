@@ -3,26 +3,6 @@ import { checkAuthenticationAuthV2, Options } from "../src/utils";
 import { ethers } from "ethers";
 import { Wallet } from "ethers";
 import { JsonRpcProvider } from "ethers";
-import stateAbi from "../src/abi/State.json";
-import authVerifierAbi from "../src/abi/AuthVerifier.json";
-import attestationRegistryAbi from "../src/abi/AttestationRegistry.json";
-import schemaRegistryAbi from "../src/abi/SchemaRegistry.json";
-import {
-  calcChallengeAuthV2,
-  CircuitId,
-  core,
-  CredentialStatusType,
-  IdentityCreationOptions,
-  ZeroKnowledgeProofAuthResponse,
-} from "@0xpolygonid/js-sdk";
-import {
-  initCircuitStorage,
-  initInMemoryDataStorageAndWallets,
-  initProofService,
-  packZkpProof,
-  prepareZkpProof,
-} from "../src/walletSetup";
-import { DID, Id } from "@iden3/js-iden3-core";
 
 const options: Record<string, Options> = {
   stars: {
@@ -49,8 +29,8 @@ const schemaId = process.env.REVIEW_ATTESTATION_SCHEMA as string;
 const privateKey = process.env.PRIVATE_KEY as string;
 const rpcUrl = process.env.BILLIONS_TESTNET_RPC_URL as string;
 const stateContractAddress = process.env.STATE_CONTRACT_ADDRESS as string;
-const authVerifierContractAddress = process.env
-  .AUTH_VERIFIER_CONTRACT_ADDRESS as string;
+const identityVerifierContractAddress = process.env
+  .IDENTITY_VERIFIER_CONTRACT_ADDRESS as string;
 const attestationRegistryContractAddress = process.env
   .ATTESTATION_REGISTRY_CONTRACT_ADDRESS as string;
 const schemaRegistryContractAddress = process.env
@@ -69,9 +49,9 @@ function checkRequiredParams() {
   if (!stateContractAddress) {
     throw new Error("STATE_CONTRACT_ADDRESS is not defined in .env file");
   }
-  if (!authVerifierContractAddress) {
+  if (!identityVerifierContractAddress) {
     throw new Error(
-      "AUTH_VERIFIER_CONTRACT_ADDRESS is not defined in .env file"
+      "IDENTITY_VERIFIER_CONTRACT_ADDRESS is not defined in .env file"
     );
   }
   if (!attestationRegistryContractAddress) {
@@ -131,7 +111,7 @@ async function main() {
       rhsUrl,
       circuitsPath,
       stateContractAddress,
-      authVerifierContractAddress,
+      identityVerifierContractAddress,
       attestationRegistryContractAddress,
       schemaRegistryContractAddress,
       chainId,
@@ -150,7 +130,7 @@ async function main() {
   console.log(`   - Encoded Data: ${encodedData}`);
 
   // Create attestation
-  console.log(`\n⏳ Creating attestation...`);
+  console.log(`\n⏳ Creating attestation review...`);
   const tx = await attestationRegistry.recordAttestation({
     schemaId: schemaId,
     attester: { did: userDid, iden3Id: userId, ethereumAddress: signerAddress },
