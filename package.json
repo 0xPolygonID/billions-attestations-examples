@@ -7,6 +7,7 @@
     "create:custom:schema": "node --env-file=.env --import tsx ./scripts/createCustomSchema.ts",
     "create:custom:attestation": "node --env-file=.env --import tsx ./scripts/createCustomAttestation.ts",
     "identity:reviews": "node --env-file=.env --import tsx ./scripts/identityReviews.ts",
+    "check:ownership": "node --env-file=.env --import tsx ./scripts/checkOwnership.ts",
     "revoke:attestation": "node --env-file=.env --import tsx ./scripts/revokeAttestation.ts"
   },
   "keywords": [],
